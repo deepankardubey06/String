@@ -3,26 +3,32 @@
 #include <string>
 using namespace std;
 
-int getLps(string s){
-	int i = 1;
-	int index = 0;
-	int n = s.length();
+string longestPrefix(string s) {
+        int i = 1;
+        int index = 0;
+        vector<int> lps(s.length());
 
-	while(i < s.length()){
-		if(s[i] == s[index]){
-			++i;
-			++index;
-		}
-		else{
-			i = i - index + 1;
-			index = 0;
-		}
-	}
-	return index>n/2? index/2:index;
+        while(i < s.length()){
+            if(s[i] == s[index]){
+                lps[i] = index + 1;
+                i++;
+                index++;
+            }
+            else{
+                if(index != 0){
+                    index = lps[index - 1];
+                }
+                else{
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        int val = lps[s.length()-1];
+        return s.substr(0,val);
 }
 
 int main(){
-	cout<<getLps("ababab")<<endl;
-	cout<<getLps("level");
+	cout<<longestPrefix("ababab")<<endl;
 	return 0;
 }
